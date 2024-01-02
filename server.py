@@ -1,29 +1,6 @@
 import socket
 import threading
 
-def handle_client_file(client_socket):
-    filename = client_socket.recv(1024).decode("utf-8")
-    file_data = client_socket.recv(1024)
-
-    # Ambil ekstensi file dari nama file
-    ext = filename.split(".")[-1]
-    print(filename)
-
-    # Cek apakah ekstensi file termasuk yang diizinkan
-    allowed_extensions = [".txt", ".png", ".pdf", ".js"]
-    if ext in allowed_extensions:
-        # Panggil fungsi untuk mengurus pengiriman file
-        save_path = f"{filename}"  # Ganti dengan direktori tempat menyimpan file
-        save_file(file_data, save_path)
-    else:
-        # Ekstensi file tidak diizinkan, berikan pesan ke client
-        client_socket.send("File extension not allowed.".encode())
-
-def save_file(file_data, save_path):
-    with open(save_path, "wb") as file:
-        file.write(file_data)
-    print(f"File berhasil disimpan: {save_path}")
-
 def broadcast(message, sender_socket):
     lock.acquire()
     for client_socket in clients:
@@ -40,10 +17,6 @@ def handle_client(client_socket, address):
                 # Client disconnects
                 remove_client(client_socket)
                 break
-
-            if str(message).startswith("/file"):
-                data_name.append(address)
-                handle_client_file(client_socket,address)
 
             else:
                 # Jika bukan file, broadcast pesan ke seluruh client
@@ -62,7 +35,7 @@ def remove_client(client_socket):
 if __name__ == '__main__':
     # Inisialisasi server socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(("localhost", 12345))
+    server_socket.bind(("127.0.0.1", 1234))
     server_socket.listen(5)
     print("Server listening on port 12345...")
 

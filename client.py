@@ -31,6 +31,7 @@ def send_text_message(client_socket, nama, message):
     time = gettime()
     encrypted_message = caesar_cipher(message, shift=3)
     formatted_message = f'{time} : {encrypted_message}'
+    print(f"pesan yang di enkripsi : {encrypted_message}")
     client_socket.send(formatted_message.encode())
 
 def receive_messages(client_socket):
@@ -47,8 +48,8 @@ def receive_messages(client_socket):
 
 def start():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_host = "localhost"
-    server_port = 12345
+    server_host = "0.tcp.ap.ngrok.io"
+    server_port = 15040
     nama = ""
 
     client_socket.connect((server_host, server_port))
