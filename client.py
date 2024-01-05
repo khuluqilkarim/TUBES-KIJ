@@ -7,7 +7,7 @@ def printc(text, color):
     print(f"\033[{color}m{text}\033[0m")
 
 def benner():
-    os.system('cls')
+    os.system('clear')
 
 def clear():
     benner()
@@ -40,7 +40,7 @@ def receive_messages(client_socket):
             encrypted_message = client_socket.recv(1024).decode()
             time_end = encrypted_message.find('m') + 1
             decrypted_message = caesar_cipher(encrypted_message[time_end:], shift=-3)
-            print(decrypted_message)
+            print("Pesan di deskripsi : ",decrypted_message)
         except:
             printc("Terputus dari server", "31")
             client_socket.close()
@@ -48,8 +48,8 @@ def receive_messages(client_socket):
 
 def start():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_host = "0.tcp.ap.ngrok.io"
-    server_port = 15040
+    server_host = "192.168.18.157"
+    server_port = 1234
     nama = ""
 
     client_socket.connect((server_host, server_port))

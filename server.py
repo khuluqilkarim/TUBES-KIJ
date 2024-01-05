@@ -14,16 +14,13 @@ def handle_client(client_socket, address):
             data_name = []
             message = client_socket.recv(1024).decode("utf-8")
             if not message:
-                # Client disconnects
                 remove_client(client_socket)
                 break
 
             else:
-                # Jika bukan file, broadcast pesan ke seluruh client
                 broadcast(message, client_socket)
 
         except Exception as e:
-            # Terjadi error, client disconnects
             print(f"Error: {str(e)}")
             remove_client(client_socket)
             break
@@ -33,13 +30,11 @@ def remove_client(client_socket):
         clients.remove(client_socket)
 
 if __name__ == '__main__':
-    # Inisialisasi server socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(("127.0.0.1", 1234))
+    server_socket.bind(("0.0.0.0", 1234))
     server_socket.listen(5)
-    print("Server listening on port 12345...")
+    print("Server listening on port 1234...")
 
-    # List untuk menyimpan koneksi client
     clients = []
     lock = threading.Lock()
 
@@ -48,6 +43,5 @@ if __name__ == '__main__':
         print(f"Terhubung dengan {client_address}")
         clients.append(client_socket)
 
-        # Jalankan thread untuk menghandle client
         client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
         client_thread.start()
